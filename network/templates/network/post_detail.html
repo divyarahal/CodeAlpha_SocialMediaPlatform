@@ -1,0 +1,19 @@
+{% extends 'network/base.html' %}
+{% block title %}Post by @{{ post.author.username }}{% endblock %}
+{% block content %}
+<a class="muted" href="{% url 'home' %}">← Back</a>
+{% include 'network/_post.html' %}
+<h2 class="section">Comments ({{ comments|length }})</h2>
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'comment_add' post.pk %}" class="card comment-form">
+  {% csrf_token %}{{ form.content }}<button class="btn small">Reply</button>
+</form>
+{% else %}<p class="muted"><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to comment.</p>{% endif %}
+{% for c in comments %}
+<div class="card comment">
+  <a class="name" href="{% url 'profile' c.author.username %}">@{{ c.author.username }}</a>
+  <span class="muted">· {{ c.created_at|timesince }} ago</span>
+  <p>{{ c.content }}</p>
+</div>
+{% empty %}<p class="muted">No comments yet.</p>{% endfor %}
+{% endblock %}

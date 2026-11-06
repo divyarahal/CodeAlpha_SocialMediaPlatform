@@ -1,0 +1,18 @@
+{% extends 'network/base.html' %}
+{% block title %}@{{ owner.username }}{% endblock %}
+{% block content %}
+<section class="card profile">
+  <div class="avatar big">{{ owner.username|slice:":1"|upper }}</div>
+  <div class="profile-info">
+    <h1>@{{ owner.username }}</h1>
+    {% if owner.profile.bio %}<p>{{ owner.profile.bio }}</p>{% endif %}
+    {% if owner.profile.location %}<p class="muted">📍 {{ owner.profile.location }}</p>{% endif %}
+    <p class="stats"><strong>{{ post_total }}</strong> posts · <strong id="follower-count">{{ followers }}</strong> followers · <strong>{{ following }}</strong> following</p>
+    {% if user == owner %}<a class="btn small ghost" href="{% url 'profile_edit' %}">Edit profile</a>
+    {% else %}{% include 'network/_follow_btn.html' with target=owner %}{% endif %}
+  </div>
+</section>
+{% for post in page_obj %}{% include 'network/_post.html' %}
+{% empty %}<div class="card muted center">No posts yet.</div>{% endfor %}
+{% include 'network/_pagination.html' %}
+{% endblock %}

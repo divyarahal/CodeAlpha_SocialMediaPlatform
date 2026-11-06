@@ -1,0 +1,13 @@
+{% extends 'network/base.html' %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<h1>Log in</h1>
+<form method="post" class="card form">{% csrf_token %}
+  {{ form.non_field_errors }}
+  <label>Username</label>{{ form.username }}
+  <label>Password</label>{{ form.password }}
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="btn">Log in</button>
+  <p class="muted">New here? <a href="{% url 'signup' %}">Create an account</a></p>
+</form>
+{% endblock %}

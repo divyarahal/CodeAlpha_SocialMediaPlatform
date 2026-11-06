@@ -1,0 +1,1 @@
+<button class="btn small follow-btn{% if is_following %} ghost{% endif %}" data-url="{% url 'follow' target.username %}">{% if is_following %}Following{% else %}Follow{% endif %}</button>

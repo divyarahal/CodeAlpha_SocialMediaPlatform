@@ -1,0 +1,22 @@
+<article class="card post">
+  <div class="post-head">
+    <a class="avatar" href="{% url 'profile' post.author.username %}">{{ post.author.username|slice:":1"|upper }}</a>
+    <div>
+      <a class="name" href="{% url 'profile' post.author.username %}">@{{ post.author.username }}</a>
+      <span class="muted">· {{ post.created_at|timesince }} ago</span>
+    </div>
+  </div>
+  <p class="post-body">{{ post.content|linebreaksbr }}</p>
+  <div class="post-actions">
+    <button class="like-btn{% if post.liked %} liked{% endif %}" data-url="{% url 'post_like' post.pk %}" aria-label="Like">
+      <span class="heart">{% if post.liked %}♥{% else %}♡{% endif %}</span> <span class="like-count">{{ post.like_count }}</span>
+    </button>
+    <a class="action" href="{% url 'post_detail' post.pk %}">💬 {{ post.comment_count }}</a>
+    {% if user == post.author %}
+      <form method="post" action="{% url 'post_delete' post.pk %}" class="inline" onsubmit="return confirm('Delete this post?')">
+        {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button class="link danger">Delete</button>
+      </form>
+    {% endif %}
+  </div>
+</article>

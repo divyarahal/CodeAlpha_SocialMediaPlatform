@@ -1,0 +1,14 @@
+{% extends 'network/base.html' %}
+{% block title %}People{% endblock %}
+{% block content %}
+<h1>People</h1>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search by username or bio"><button class="btn">Search</button></form>
+{% for u in users %}
+<div class="card person">
+  <a class="avatar" href="{% url 'profile' u.username %}">{{ u.username|slice:":1"|upper }}</a>
+  <div class="grow"><a class="name" href="{% url 'profile' u.username %}">@{{ u.username }}</a>
+    <div class="muted">{{ u.profile.bio|default:"No bio yet" }}</div></div>
+  {% if user.is_authenticated %}{% include 'network/_follow_btn.html' with target=u is_following=u.is_following %}{% endif %}
+</div>
+{% empty %}<div class="card muted center">No users found.</div>{% endfor %}
+{% endblock %}

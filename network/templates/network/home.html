@@ -1,0 +1,21 @@
+{% extends 'network/base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'post_create' %}" class="card composer">
+  {% csrf_token %}
+  {{ form.content }}
+  <div class="composer-row"><span class="muted"><span id="chars">0</span>/280</span><button class="btn">Post</button></div>
+</form>
+<div class="tabs">
+  <a class="{% if feed == 'following' %}active{% endif %}" href="?feed=following">Following</a>
+  <a class="{% if feed == 'all' %}active{% endif %}" href="?feed=all">Everyone</a>
+</div>
+{% else %}
+<div class="card hero"><h1>Share what's happening.</h1><p>Join Connectly to post, comment, like and follow people.</p>
+<a class="btn" href="{% url 'signup' %}">Create account</a></div>
+{% endif %}
+{% for post in page_obj %}{% include 'network/_post.html' %}
+{% empty %}<div class="card muted center">Nothing here yet. {% if user.is_authenticated %}Write a post or <a href="{% url 'people' %}">follow some people</a>.{% endif %}</div>
+{% endfor %}
+{% include 'network/_pagination.html' %}
+{% endblock %}

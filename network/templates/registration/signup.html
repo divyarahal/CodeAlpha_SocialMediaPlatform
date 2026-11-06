@@ -1,0 +1,10 @@
+{% extends 'network/base.html' %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+<h1>Create your account</h1>
+<form method="post" class="card form">{% csrf_token %}
+  {% for f in form %}<label>{{ f.label }}</label>{{ f }}{{ f.errors }}{% if f.help_text %}<small class="muted">{{ f.help_text|safe }}</small>{% endif %}{% endfor %}
+  <button class="btn">Sign up</button>
+  <p class="muted">Already registered? <a href="{% url 'login' %}">Log in</a></p>
+</form>
+{% endblock %}
